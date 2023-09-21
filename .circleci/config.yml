@@ -16,7 +16,7 @@ jobs:
             echo $version
             docker build -t circle-ci-app:$version .
             docker images
-            docker login -u bhanuprakashnrb -p "$DOCKER_PASSWORD"  docker.io
+            docker login -u bhanunr -p "$DOCKER_PASSWORD"  docker.io
             docker tag circle-ci-app:$version  bhanuprakshnrb/circle-ci-app:$version 
             docker push bhanuprakshnrb/circle-ci-app:$version
 workflows:
