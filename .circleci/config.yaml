@@ -1,0 +1,26 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+      - run:
+          name: Build Docker image
+          command: |
+            version="$CIRCLE_SHA1"
+            # Remove any characters that are invalid in Docker image tags
+            echo $version
+            docker build -t circle-ci-app:$version .
+            docker images
+            docker login -u bhanuprakashnrb -p "$DOCKER_PASSWORD"  docker.io
+            docker tag circle-ci-app:$version  bhanuprakshnrb/circle-ci-app:$version 
+            docker push bhanuprakshnrb/circle-ci-app:$version
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
